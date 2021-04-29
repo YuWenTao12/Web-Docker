@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block navbar %}{{ super() }} <!--super()函数会调用显示父模板中的内容-->
+<table class="table table-bordered table-hover" style="margin-top: 0; font-size: medium; font-family: 'Microsoft YaHei UI',serif;"> <!--设置表格及其样式等-->
+    <thead>   <!--表头-->
+        <tr class="active"> <!--tr：表每行-->
+            <th>容器ID <span class="glyphicon glyphicon-tag"></span></th>     <!--设置表的每个字段-->
+            <th>容器名称 <span class="glyphicon glyphicon-list"></span></th>
+            <th>服务器IP <span class="glyphicon glyphicon-cog"></span></th>
+            <th>状态 <span class="glyphicon glyphicon-eject"></span></th>
+            <th>功能按钮 <span class="glyphicon glyphicon-refresh"></span></th>
+        </tr>
+    </thead>
+    <tbody>  <!--设置表体-->
+        {% for number in container_number %}    <!--遍历[0,容器个数)，即遍历所有容器-->
+            <tr>    <!--表每行-->
+                <td>{{ container_info[number]['Id'] }}</td> <!--容器ID-->
+                <td>{{ container_info[number]['Names'][0][1::] }}</td>  <!--容器Names-->
+                <td>{{ server_ip }}</td>   <!--服务器IP-->
+                {% if container_info[number]['State'] == 'running' %}   <!--判断容器状态信息，根据状态，显示不同的字段-->
+                    <td class="success" id="{{ container_info[number]['Id'] }}">{{ container_info[number]['State'] }}</td>  <!--容器为运行时-->
+                    {% else %}
+                    <td class="danger" id="{{ container_info[number]['Id'] }}">{{ container_info[number]['State'] }}</td>   <!--容器不在运行时-->
+                {% endif %}
+                <td>
+                    <form method="post" action="{{ url_for('first') }}">    <!--设置重启按钮的表单设置，用POST请求再返回根路由-->
+                        <input type="hidden" name="restart" value="{{ container_info[number]['Id'] }}"> <!--设置隐藏表单数据，hidden，当触发提交动作，自动传输，不显示给用户-->
+                        <input type="hidden" name="server" value="{{ server_ip }}">
+                        <input type="submit" value="重启" onclick="restart_container('{{ container_info[number]['Id'] }}')" class="btn btn-default"> <span class="glyphicon glyphicon-repeat"></span>
+                        <!--提交按钮，onclick：当点击按钮时，触发JS函数，在重启过程中，显示Restarting状态。-->
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    <script>
+        function restart_container(container_ID) {  //定义函数，当用户点击按钮时，触发此函数，获取容器状态元素id，暂时更改容器状态
+            document.getElementById(container_ID).innerHTML = "Restarting";
+            document.getElementById(container_ID).setAttribute("class","warning");
+        }
+        if ( window.history.replaceState ) {    //去除表单重复提交提示
+            window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
+{% if Standard_restart != None %}   <!--判断重启状态-->
+    <script>
+            if ("{{ Standard_restart }}") {
+                alert("重启成功");  //为true，则重启成功
+            } else {
+                alert("重启失败");  //为false，则重启失败
+            }
+    </script>
+{% endif %}
+{% endblock %}

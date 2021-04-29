@@ -1,0 +1,40 @@
+{% extends 'bootstrap/base.html' %}     <!--引用bootstrap模板-->
+{% block title %} Hello {% endblock %}
+{% block navbar %}
+    <div class="jumbotron text-center" style="margin-bottom: 0px;"> <!--margin-bottom：调整上边距；jumbotron：大屏幕，包含文字说明+-->
+        <h2>Hello，输入想查看容器的服务器IP：</h2>
+        <div class="col-md-6" style="margin-left: 24%;">    <!--调整文本输入框位置-->
+            <form class="input-group" method="post" action="/"> <!--设置表单，用来接收用户输入的服务器IP-->
+                <input type="text" class="form-control" placeholder="服务器IP(x.x.x.x)" name="server" required id="server" pattern="((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}">
+                <!--设置文本输入框、增加验证不能为空、验证数据必须为IP，根据name回传表单数据-->
+                <span class="input-group-btn">  <!--input-group-btn：按钮组-->
+                    <input class="btn btn-default" type="submit" value="GO!" style="font-family: 'Microsoft YaHei UI',serif; font-weight: bold;">   <!--GO提交按钮，微软雅黑，加粗-->
+                    <input class="btn btn-default" type="reset" value="重新输入" style="font-family: 'Microsoft YaHei UI',serif; font-weight: bold;">   <!--重置按钮，微软雅黑，加粗-->
+                </span>
+            </form>
+        </div>
+    </div>
+    <nav class="nav navbar navbar-inverse navbar-fixed-top">    <!--设置导航栏，固定在顶部-->
+        <div class="container-fluid">
+            <div class="navbar-header"> <!--导航头，里面字体较大些，一般来设置网站标题-->
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#test"> <!--设置小屏切换导航，data-toggle应用折叠样式，data-target应用到id为test的元素-->
+                    <span class="sr-only">切换导航</span>   <!--用于供应屏幕阅读器读取-->
+                    <span class="icon-bar"></span>  <!--一个icon-bar代表一条杠-->
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand center-block"><span class="glyphicon glyphicon-folder-open"> WebDocker</span></a>   <!--设置网站标题-->
+            </div>
+            <div class="collapse navbar-collapse" id="test">    <!--设置导航子标题，折叠样式-->
+                <ul class="nav navbar-nav">
+                    <li><a href="#"><span class="glyphicon glyphicon-folder-close"> 返回上一页</span></a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-folder-close"> 返回主页</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <footer class="footer" style="position: absolute; bottom: 0; width: 100%; height: 60px; background-color: #f5f5f5;">    <!--设置底部栏-->
+        <span style="margin-left: 41%; font-family: 'Microsoft YaHei UI',serif; font-weight: bold; position: relative; top: 35%;">Copyright &copy;TTP to 1425610120@qq.com</span>
+    </footer>
+{% endblock %}
+
